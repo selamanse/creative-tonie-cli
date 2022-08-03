@@ -1,0 +1,4 @@
+requests
+requests-oauthlib
+youtube_dl
+typer
