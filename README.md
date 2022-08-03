@@ -20,7 +20,7 @@ A cli to put content on your tonie
 - `export TONIECLOUD_PASSWORD=...`
 
 ## docker
-- `docker run -ti --rm -e TONIECLOUD_USERNAME=$TONIECLOUD_USERNAME -e TONIECLOUD_PASSWORD=$TONIECLOUD_PASSWORD creativetonie print-tonies`
+- `docker run -ti --rm -e TONIECLOUD_USERNAME=$TONIECLOUD_USERNAME -e TONIECLOUD_PASSWORD=$TONIECLOUD_PASSWORD selamanse/creativetonie print-tonies`
 
 ## python3
 - `python3 ./creative-tonie.py print-tonies`
