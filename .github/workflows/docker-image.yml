@@ -26,9 +26,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
       - name: Build and push
-        uses: docker/bake-action@v4
+        uses: docker/build-push-action@v5
         with:
           push: true
-          set: |
-            *.platform=linux/amd64,linux/arm64
-            *.tags=${{ github.repository_owner }}/creativetonie:latest
+          tags: ${{ github.repository_owner }}/creativetonie:latest
