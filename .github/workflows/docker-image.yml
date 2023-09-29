@@ -32,4 +32,4 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: |
             ${{ github.repository_owner }}/creativetonie:latest
-            ${{ github.repository_owner }}/creativetonie:${SHORT_SHA}
+            ${{ github.repository_owner }}/creativetonie:${{ env.SHORT_SHA }}
