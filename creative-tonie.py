@@ -1,20 +1,15 @@
+#! /usr/bin/env python3
 from __future__ import unicode_literals
 
+import logging
 import os, sys
 from tonie_controller import TonieController
 import typer
-import youtube_dl
+from yt_dlp import YoutubeDL
 
-class MyLogger(object):
-    def debug(self, msg):
-        pass
-
-    def warning(self, msg):
-        pass
-
-    def error(self, msg):
-        print(msg)
-
+log = logging.getLogger(__name__)
+logging.basicConfig(level = logging.INFO)
+log.addHandler(logging.NullHandler())
 
 def my_hook(d):
     if d['status'] == 'finished':
@@ -27,21 +22,21 @@ ydl_opts = {
         'preferredcodec': 'mp3',
         'preferredquality': '192',
     }],
-    'logger': MyLogger(),
+    'logger': log,
     'progress_hooks': [my_hook],
-    'outtmpl': 'output.%(ext)s'
+    'outtmpl': 'output.%(ext)s',
+    'nocheckcertificate': True,
+    'verbose': True,
+    'force_generic_extractor': True
 }
 
 main = typer.Typer()
 
 @main.command()
 def copy_yt(tonie_name: str, youtube_link: str, content_title: str='custom_content'):
-    tonie_id = tc.getTonieIdByName(tonie_name)
-    typer.echo(f"found tonie {tonie_name} with ID: {tonie_id}")
-
-    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+    with YoutubeDL(ydl_opts) as ydl:
         ydl.download([youtube_link])
-        tc.tonieUpload(tonie_id, './output.mp3', content_title)
+        tc.tonieUpload(tonie_name, './output.mp3', content_title)
     typer.echo(f"done.")
 
 @main.command()
@@ -50,14 +45,12 @@ def print_tonies():
 
 @main.command()
 def wipe_tonie(tonie_name: str):
-    tonie_id = tc.getTonieIdByName(tonie_name)
-    tc.wipeTonie(tonie_id)
-    typer.echo(f'tonie {tonie_name} (ID: {tonie_id}) wiped.')
+    tc.wipeTonie(tonie_name)
+    typer.echo(f'tonie {tonie_name} wiped.')
 
 @main.command()
 def print_tonie_chapters(tonie_name: str):
-    tonie_id = tc.getTonieIdByName(tonie_name)
-    typer.echo(tc.getChaptersForTonie(tonie_id))
+    typer.echo(tc.getChaptersForTonie(tonie_name))
 
 if __name__ == "__main__":
     tc = TonieController(os.environ.get('TONIECLOUD_USERNAME'), os.environ.get('TONIECLOUD_PASSWORD'))
