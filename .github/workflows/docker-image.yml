@@ -23,9 +23,8 @@ jobs:
         with:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
-      - name: Get GIT revision as ShortSHA
-        id: gitrev
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+      - name: Add SHORT_SHA env property with commit short sha
+        run: echo "SHORT_SHA=`echo ${GITHUB_SHA} | cut -c1-8`" >> $GITHUB_ENV
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
@@ -33,4 +32,4 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: |
             ${{ github.repository_owner }}/creativetonie:latest
-            ${{ github.repository_owner }}/creativetonie:${{ steps.vars.gitrev.sha_short }}
+            ${{ github.repository_owner }}/creativetonie:${SHORT_SHA}
