@@ -6,6 +6,6 @@ RUN apk add git ffmpeg
 
 COPY . .
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements-all.txt
 
 ENTRYPOINT [ "python", "./creative-tonie.py" ]

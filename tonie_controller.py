@@ -27,6 +27,7 @@ class TonieController:
 
     # upload a given episode to a creative tonie
     def tonieUpload(self, tonie_name, f, title):
+        log.info(f"uploading file {f} as {title} to {tonie_name}")
         tonie = self.__creativeTonies[tonie_name]
         return self.__api.upload_file_to_tonie(tonie, f, title)
 

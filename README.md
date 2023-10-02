@@ -1,18 +1,22 @@
 # creative-tonie-cli
-A cli to put content on your tonie
+A cli to put custom content on your creative tonie
 
 # Prerequesites
 
 - clone [tonie_api](https://github.com/moritzj29/tonie_api) to `./../tonie_api`
 - or use provided docker file to build and run...
 
-# build 
+# build
 
 ## docker 
 - `docker build -t creativetonie .`
 
 ## python3
-- `pip3 install -r requirements.txt`
+- `pip3 install -r requirements-all.txt`
+
+### regenerate dependencies with
+
+`pip-compile requirements.txt --output-file requirements-all.txt`
 
 
 # run
@@ -29,7 +33,7 @@ A cli to put content on your tonie
 
 to get a current list of commands run program with `--help`
 
--  copy-yt
+-  copy-path
 -  print-tonie-chapters
 -  print-tonies
 -  wipe-tonie
