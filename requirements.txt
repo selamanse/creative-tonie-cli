@@ -3,3 +3,4 @@ requests-oauthlib
 yt_dlp
 typer
 tonie-api
+tinytag

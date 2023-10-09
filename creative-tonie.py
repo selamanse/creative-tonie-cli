@@ -7,6 +7,7 @@ from tonie_controller import TonieController
 import typer
 from typing import Optional
 from yt_dlp import YoutubeDL
+from tinytag import TinyTag
 
 log = logging.getLogger(__name__)
 logging.basicConfig(level = logging.INFO)
@@ -40,15 +41,21 @@ def copy_yt(tonie_name: str, youtube_link: str, content_title: Optional[str] = t
         tc.tonieUpload(tonie_name, './output.mp3', content_title)
     typer.echo(f"done.")
 
-@main.command()
+@main.command(help="upload all mp3s of a folder to creative-tonie")
 def copy_path(tonie_name: str, file_path: str, content_title: Optional[str] = typer.Argument(default="custom_content")):
     if os.path.isdir(file_path):  
         log.info(f"uploading all files in {file_path}")
         for (dirpath, dirnames, filenames) in os.walk(file_path):
-            for i in range(len(filenames)):
-                f = f"{file_path}/{filenames[i]}"
-                tc.tonieUpload(tonie_name, f, f"{content_title}-{i}")                
-            break
+            sortedFilenames=sorted(filenames) # sorts as strings
+            for i in range(len(sortedFilenames)):
+
+                f = f"{file_path}/{sortedFilenames[i]}"
+                tag = TinyTag.get(f)
+                log.info('This track title is %s.' % tag.title)
+                log.info('It is %f seconds long.' % tag.duration)
+                tc.tonieUpload(tonie_name, f, f"{tag.title}")
+
+            break # break after first level
     elif os.path.isfile(file_path):  
         tc.tonieUpload(tonie_name, file_path, content_title)
     typer.echo(f"done.")
@@ -57,7 +64,7 @@ def copy_path(tonie_name: str, file_path: str, content_title: Optional[str] = ty
 def print_tonies():
     typer.echo(tc.printToniesOverview())
 
-@main.command()
+@main.command(help="delete all chapters of a creative-tonie")
 def wipe_tonie(tonie_name: str):
     tc.wipeTonie(tonie_name)
     typer.echo(f'tonie {tonie_name} wiped.')

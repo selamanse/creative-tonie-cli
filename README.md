@@ -3,7 +3,9 @@ A cli to put custom content on your creative tonie
 
 # Prerequesites
 
-- clone [tonie_api](https://github.com/moritzj29/tonie_api) to `./../tonie_api`
+- toniebox
+- user and password for [toniecloud](https://login.tonies.com)
+- python3.10 or higher
 - or use provided docker file to build and run...
 
 # build
@@ -26,8 +28,9 @@ A cli to put custom content on your creative tonie
 ## docker
 - `docker run -ti --rm -e TONIECLOUD_USERNAME=$TONIECLOUD_USERNAME -e TONIECLOUD_PASSWORD=$TONIECLOUD_PASSWORD selamanse/creativetonie print-tonies`
 
-## python3
+## direct examples
 - `python3 ./creative-tonie.py print-tonies`
+- `python3 ./creative-tonie.py copy-path My-Creative-Tonie ~/Music/MyTonieContent/FolderWithMP3s`
 
 # commands:
 
