@@ -48,9 +48,15 @@ def copy_path(tonie_name: str, file_path: str, content_title: Optional[str] = ty
         for (dirpath, dirnames, filenames) in os.walk(file_path):
             sortedFilenames=sorted(filenames) # sorts as strings
             for i in range(len(sortedFilenames)):
-
                 f = f"{file_path}/{sortedFilenames[i]}"
-                tag = TinyTag.get(f)
+
+                log.debug(f"file {f}")
+                try:
+                    tag = TinyTag.get(f)
+                except Exception as e:
+                    log.warning(f"cannot get tag info for file {f}. Reason: {e}")
+                    continue
+
                 log.info('This track title is %s.' % tag.title)
                 log.info('It is %f seconds long.' % tag.duration)
                 tc.tonieUpload(tonie_name, f, f"{tag.title}")
